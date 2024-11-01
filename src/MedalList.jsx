@@ -1,4 +1,17 @@
-function MedalList({ countries, sortedCountries, deleteCountryHandler}) {
+function MedalList({ countries, sortedCountries, setCountries }) {
+    // 삭제버튼의 onclick 이벤트를 통해 데이터를 인자로 받아온다.
+    // 파라미터의 이름은 마음대로 지어도 된다. 단 명시적이게!
+    const deleteCountryHandler = (countryToDelete) => {
+        // confirm() 메서드 사용자에서 확인 메세지를 띄워주는 기능
+        const confirmDelete = window.confirm(`${countryToDelete} 국가를 정말 삭제하시겠습니까?`);
+        if (confirmDelete) {
+            // 가져온 데이터값이 배열의 데이터값과 일치하지 않은 경우만 골라서 상태변경함수에 전달한다.
+            // 가져온 데이터값만 사라진 배열이 화면에 나타난다.
+            const deletedCountries = countries.filter(c => c.countryName !== countryToDelete);
+            setCountries(deletedCountries);
+        }
+    }
+
     return (
         <>
             <div className='table-group'>
