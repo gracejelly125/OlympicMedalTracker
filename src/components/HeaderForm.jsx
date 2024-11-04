@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { Title, Container, Form, InputGroup } from "../styles/HeaderFormStyle";
+import { ButtonGroup, Button } from "../styles/ButtonGroupStyle";
 
-function HeaderFormBox({ countries, setCountries }) {
+function HeaderForm({ countries, setCountries }) {
   // useState() : 컴포넌트의 상태를 관리하는 함수
   // 두가지 값을 포함하는 배열을 반환한다!
   // [현재상태값, 상태값 변경 함수] = useState(0) <= 소괄호 안에 초기값 설정!
@@ -10,8 +12,10 @@ function HeaderFormBox({ countries, setCountries }) {
   const [gold, setGold] = useState('');
   const [silver, setSilver] = useState('');
   const [bronze, setBronze] = useState('');
+  // const [gold, setGold] = useInput(); => useInput 잘 안 씀!
+  // useForm 사용하는게 더 나음 form에 있는 onSubmit 핸들러를 분리해줄 수 있다.
 
-    // 추가 버튼
+  // 추가 버튼
   // preventDefault 로 값이 입력되면 새로고침되는 현상을 막아준다.
   // 새로 입력된 국가명이 기존에 입력된 국가명이랑 같으면
   // true를 받아서 alert을 띄운다.
@@ -27,18 +31,20 @@ function HeaderFormBox({ countries, setCountries }) {
     // 상태변경함수로 기존 배열에 새로운 데이터를 추가한다.
     // 이후 인풋 박스의 값은 초기화 한다.
     else if (countryName) {
-      setCountries([...countries,
-      { countryName, gold: Number(gold), silver: Number(silver), bronze: Number(bronze) }]);
+      const newCountry = {
+        countryName: countryName, gold: Number(gold), silver: Number(silver), bronze: Number(bronze)
+      }
+      setCountries([...countries, newCountry]);
       resetForm();
     }
   }
 
-    // 업데이트 버튼
+  // 업데이트 버튼
   // 기존 배열안의 countryName이 현재 입력한 countryName 이랑 같으면 true, 없으면 false
   // false 라면 alert을 띄운다.
   const updateCountryHandler = (e) => {
     e.preventDefault();
-    const countryExists = countries.some((country) => country.countryName === countryName);
+    const countryExists = countries.find((country) => country.countryName === countryName);
     if (!countryExists) {
       alert("등록되지 않은 국가입니다.");
       return;
@@ -65,35 +71,39 @@ function HeaderFormBox({ countries, setCountries }) {
 
   return (
     <>
-      <div>
-        <h1 className='title'>2024 파리 올림픽</h1>
-      </div>
-      <div className='container'>
-        <form onSubmit={addCountryHandler}>
-          <div className='input-group'>
-            <label>국가명</label>
-            <input type="text" value={countryName} placeholder='국가명을 입력해주세요' onChange={(e) => setCountryName(e.target.value.trim())} />
-          </div>
-          <div className='input-group'>
-            <label>금메달</label>
-            <input type="number" value={gold} placeholder='금메달 수를 입력해주세요' onChange={(e) => setGold(e.target.value)} />
-          </div>
-          <div className='input-group'>
-            <label>은메달</label>
-            <input type="number" value={silver} placeholder='은메달 수를 입력해주세요' onChange={(e) => setSilver(e.target.value)} />
-          </div>
-          <div className='input-group'>
-            <label>동메달</label>
-            <input type="number" value={bronze} placeholder='동메달 수를 입력해주세요' onChange={(e) => setBronze(e.target.value)} />
-          </div>
-          <div className='button-group'>
-            <button type='submit'>국가추가</button>
-            <button type='button' onClick={updateCountryHandler}>업데이트</button>
-          </div>
-        </form>
-      </div>
+
+        <Title>2024 파리 올림픽</Title>
+
+      <Container>
+        <Form onSubmit={addCountryHandler}>
+          <InputGroup>
+            <label htmlFor="countryname">국가명</label>
+            <input type="text" value={countryName} placeholder='국가명을 입력해주세요' onChange={(e) => setCountryName(e.target.value.trim())} 
+            id="countryname" required/>
+          </InputGroup>
+          <InputGroup>
+            <label htmlFor="goldmedal">금메달</label>
+            <input type="number" value={gold} placeholder='금메달 수를 입력해주세요' onChange={(e) => setGold(e.target.value)} 
+            min="0" max="99" id="goldmedal" required/>
+          </InputGroup>
+          <InputGroup>
+            <label htmlFor="silvermedal">은메달</label>
+            <input type="number" value={silver} placeholder='은메달 수를 입력해주세요' onChange={(e) => setSilver(e.target.value)} 
+            min="0" max="99" id="silvermedal"  required/>
+          </InputGroup>
+          <InputGroup>
+            <label htmlFor="bronzemedal">동메달</label>
+            <input type="number" value={bronze} placeholder='동메달 수를 입력해주세요' onChange={(e) => setBronze(e.target.value)}
+            min="0" max="99" id="bronzemedal" required/>
+          </InputGroup>
+          <ButtonGroup>
+            <Button type='submit'>국가추가</Button>
+            <Button type='Button' onClick={updateCountryHandler}>업데이트</Button>
+          </ButtonGroup>
+        </Form>
+      </Container>
     </>
   );
 }
 
-export default HeaderFormBox;
+export default HeaderForm;
