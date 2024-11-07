@@ -9,9 +9,9 @@ function HeaderForm({ countries, setCountries }) {
   // 상태는 메모리가 있기 때문에, 메모리가 바뀐 상태를 유지해서 다시 렌더링한다.
   // 리렌더링: 처음부터 함수 컴포넌트를 다시 실행한다.
   const [countryName, setCountryName] = useState('');
-  const [gold, setGold] = useState('');
-  const [silver, setSilver] = useState('');
-  const [bronze, setBronze] = useState('');
+  const [gold, setGold] = useState(0);
+  const [silver, setSilver] = useState(0);
+  const [bronze, setBronze] = useState(0);
   // const [gold, setGold] = useInput(); => useInput 잘 안 씀!
   // useForm 사용하는게 더 나음 form에 있는 onSubmit 핸들러를 분리해줄 수 있다.
 
@@ -32,7 +32,7 @@ function HeaderForm({ countries, setCountries }) {
     // 이후 인풋 박스의 값은 초기화 한다.
     else if (countryName) {
       const newCountry = {
-        countryName: countryName, gold: Number(gold), silver: Number(silver), bronze: Number(bronze)
+        id: Date.now(), countryName: countryName, gold: Number(gold), silver: Number(silver), bronze: Number(bronze)
       }
       setCountries([...countries, newCountry]);
       resetForm();
@@ -52,7 +52,7 @@ function HeaderForm({ countries, setCountries }) {
     // true인 경우 배열에 새로운 입력값을 추가하고,
     // false 라면 기존 입력값을 그대로 둔다.
     const updatedCountries = countries.map((country) => country.countryName === countryName
-      ? { ...country, gold: Number(gold), silver: Number(silver), bronze: Number(bronze) }
+      ? { ...country, gold, silver, bronze }
       : country);
     // true 라면 새로운 입력값이 상태변경함수에 반영되어 화면이 변경된다.
     // false 라면 기존값이 전달돼서 변경되지 않는다.
@@ -83,17 +83,17 @@ function HeaderForm({ countries, setCountries }) {
           </InputGroup>
           <InputGroup>
             <label htmlFor="goldmedal">금메달</label>
-            <input type="number" value={gold} placeholder='금메달 수를 입력해주세요' onChange={(e) => setGold(e.target.value)} 
+            <input type="number" value={gold || ""} placeholder='금메달 수를 입력해주세요' onChange={(e) => setGold(+e.target.value)} 
             min="0" max="99" id="goldmedal" required/>
           </InputGroup>
           <InputGroup>
             <label htmlFor="silvermedal">은메달</label>
-            <input type="number" value={silver} placeholder='은메달 수를 입력해주세요' onChange={(e) => setSilver(e.target.value)} 
+            <input type="number" value={silver || ""} placeholder='은메달 수를 입력해주세요' onChange={(e) => setSilver(+e.target.value)} 
             min="0" max="99" id="silvermedal"  required/>
           </InputGroup>
           <InputGroup>
             <label htmlFor="bronzemedal">동메달</label>
-            <input type="number" value={bronze} placeholder='동메달 수를 입력해주세요' onChange={(e) => setBronze(e.target.value)}
+            <input type="number" value={bronze || ""} placeholder='동메달 수를 입력해주세요' onChange={(e) => setBronze(+e.target.value)}
             min="0" max="99" id="bronzemedal" required/>
           </InputGroup>
           <ButtonGroup>

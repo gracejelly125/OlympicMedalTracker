@@ -100,7 +100,7 @@ function MedalList({ countries, setCountries }) {
             {sortedCountries.map((country, index) => {
               return (
                 <MedalTable
-                  key={country.countryName}
+                  key={country.id}
                   className={index % 2 === 0 ? "even" : "odd"}
                 >
                   <MedalTableCell>{index + 1}</MedalTableCell>
