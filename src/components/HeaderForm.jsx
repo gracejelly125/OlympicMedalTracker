@@ -31,9 +31,7 @@ function HeaderForm({ countries, setCountries }) {
     // 상태변경함수로 기존 배열에 새로운 데이터를 추가한다.
     // 이후 인풋 박스의 값은 초기화 한다.
     else if (countryName) {
-      const newCountry = {
-        id: Date.now(), countryName: countryName, gold: Number(gold), silver: Number(silver), bronze: Number(bronze)
-      }
+      const newCountry = { id: Date.now(), countryName, gold, silver, bronze };
       setCountries([...countries, newCountry]);
       resetForm();
     }
